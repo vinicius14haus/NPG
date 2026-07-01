@@ -1,65 +1,78 @@
 "use client";
 
-import { Quote } from "lucide-react";
+import { Quote, Star } from "lucide-react";
+import Image from "next/image";
 import { Eyebrow, MotionBlock } from "@/components/ui";
 
 export function DepoimentosSection() {
   const testimonials = [
     {
-      quote: "Parei de perseguir morador no corredor. O condomínio recebe certo todo mês e eu cuido do que importa.",
-      name: "Ricardo Almeida",
-      role: "Residencial Alphaville · Barueri, SP",
-      initials: "RA",
-    },
-    {
       quote: "A inadimplência tinha travado a reforma da fachada. Com a garantia, conseguimos planejar e executar a obra.",
       name: "Sandra Beltrão",
-      role: "Edifício Aurora · Belo Horizonte, MG",
-      initials: "SB",
+      role: "Edifício Aurora · Itaim Bibi, São Paulo, SP",
+      photo: "/assets/Pessoa1.png",
+    },
+    {
+      quote: "Parei de perseguir morador no corredor. O condomínio recebe certo todo mês e eu cuido do que importa.",
+      name: "Ricardo Almeida",
+      role: "Condomínio Panamérica · Vila Olímpia, São Paulo, SP",
+      photo: "/assets/Pessoa2.png",
     },
     {
       quote: "O que mais pesava era a cobrança. Hoje isso é da NPG, e as assembleias ficaram muito menos tensas.",
       name: "Marcos Tavares",
-      role: "Condomínio Parque das Águas · Curitiba, PR",
-      initials: "MT",
-    },
-    {
-      quote: "Como gestora de uma carteira de prédios, a previsibilidade de caixa mudou a forma como faço o orçamento.",
-      name: "Letícia Moraes",
-      role: "Administradora Moraes & Cia · São Paulo, SP",
-      initials: "LM",
+      role: "Edifício Fidalga · Pinheiros, São Paulo, SP",
+      photo: "/assets/Pessoa3.png",
     },
   ];
 
   return (
-    <section className="section-grid bg-white px-5 py-24 lg:px-8 lg:py-28">
-      <div className="mx-auto max-w-[1220px]">
-        <MotionBlock>
+    <section className="relative overflow-hidden bg-[#0E1F1E] px-5 py-24 text-white lg:px-8 lg:py-28">
+      <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(20,52,78,0.9),rgba(14,31,30,1)_55%,rgba(20,52,78,0.82))]" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#F1C75B]/70 to-transparent" />
+
+      <div className="relative z-10 mx-auto max-w-[1220px]">
+        <MotionBlock className="flex flex-col items-center text-center">
           <Eyebrow icon={<Quote aria-hidden="true" className="h-4 w-4" />}>
             Quem já garantiu
           </Eyebrow>
-          <h2 className="max-w-xl text-4xl font-black leading-tight text-[#14344E] md:text-5xl">
-            Síndicos que pararam de se preocupar com o caixa.
+          <h2 className="max-w-3xl px-4 text-4xl font-black leading-tight md:text-5xl">
+            Síndicos que pararam de
+            <br />
+            se preocupar com o caixa.
           </h2>
         </MotionBlock>
 
-        <div className="mt-14 grid gap-5 sm:grid-cols-2">
+        <div className="mt-14 grid gap-5 lg:grid-cols-3">
           {testimonials.map((t, i) => (
             <MotionBlock key={t.name} delay={i * 0.08}>
-              <article
-                className="h-full rounded-[8px] border border-[#14344E]/10 bg-white p-6 shadow-[0_16px_46px_rgba(20,52,78,0.06)] transition-transform duration-300 hover:-translate-y-1"
-              >
-                <Quote aria-hidden="true" className="mb-4 h-6 w-6 text-[#F1C75B]" />
-                <p className="text-base leading-7 text-[#14344E]/80 italic">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div className="mt-6 flex items-center gap-3 border-t border-[#14344E]/10 pt-4">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#14344E] text-xs font-black text-[#F1C75B]">
-                    {t.initials}
+              <article className="premium-glass-button topbar-ticket-button group relative flex h-full min-h-[280px] flex-col justify-between overflow-hidden rounded-[16px] p-7">
+                <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.36),transparent_34%,rgba(255,255,255,0.14)_72%,transparent)] opacity-85 transition-opacity group-hover:opacity-100" />
+                <div className="relative z-10">
+                  <div className="mb-3 flex gap-0.5">
+                    {Array.from({ length: 5 }).map((_, starIndex) => (
+                      <Star
+                        key={starIndex}
+                        aria-hidden="true"
+                        className="h-4 w-4 fill-[#F1C75B] text-[#F1C75B]"
+                      />
+                    ))}
+                  </div>
+                  <p className="text-base leading-7 text-white/85">{t.quote}</p>
+                </div>
+                <div className="relative z-10 mt-6 flex items-center gap-3">
+                  <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border border-[#F1C75B]/50">
+                    <Image
+                      src={t.photo}
+                      alt={t.name}
+                      fill
+                      className="object-cover"
+                      sizes="64px"
+                    />
                   </span>
                   <div>
-                    <p className="text-sm font-black text-[#14344E]">{t.name}</p>
-                    <p className="text-xs text-[#14344E]/50">{t.role}</p>
+                    <p className="text-sm font-black text-[#FFE8A6]">{t.name}</p>
+                    <p className="text-xs text-white/55">{t.role}</p>
                   </div>
                 </div>
               </article>
