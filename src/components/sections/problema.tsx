@@ -35,7 +35,7 @@ export function ProblemaSection() {
 
           <MotionBlock delay={0.12} className="w-full justify-self-end">
             <div className="relative w-full">
-              <div className="npg-company-photo relative overflow-hidden rounded-[8px] border border-white/70 bg-[#0E1F1E] shadow-[0_28px_80px_rgba(20,52,78,0.18)]">
+              <div className="npg-company-photo relative overflow-hidden rounded-[18px] border border-white/70 bg-[#0E1F1E] shadow-[0_28px_80px_rgba(20,52,78,0.18)]">
                 <Image
                   src="/assets/analog-landscape-city-with-buildings-vertical.jpg"
                   alt="Condomínio residencial moderno com área externa arborizada"
@@ -46,7 +46,7 @@ export function ProblemaSection() {
                   priority={false}
                 />
 
-                <div className="npg-image-glass-card absolute bottom-4 left-4 right-4 z-10 rounded-[8px] p-4 text-white">
+                <div className="npg-image-glass-card absolute bottom-4 left-4 right-4 z-10 rounded-[18px] p-4 text-white">
                   <p className="relative z-10 text-xs font-black uppercase tracking-[0.2em] text-[#F1C75B]">
                     Para a rotina
                   </p>
