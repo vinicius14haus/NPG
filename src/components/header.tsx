@@ -14,17 +14,85 @@ const navItems = [
   { label: "Contato", href: "/contato" },
 ];
 
+function isLightColor(color: string) {
+  const match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+
+  if (!match) {
+    return false;
+  }
+
+  const [, r, g, b, alpha = "1"] = match;
+
+  if (Number(alpha) < 0.3) {
+    return false;
+  }
+
+  const luminance = 0.2126 * Number(r) + 0.7152 * Number(g) + 0.0722 * Number(b);
+  return luminance > 165;
+}
+
+function logoIsOverLightSurface() {
+  const logo = document.querySelector<HTMLElement>("[data-header-logo]");
+
+  if (!logo) {
+    return false;
+  }
+
+  const rect = logo.getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
+  const elements = document.elementsFromPoint(x, y);
+
+  for (const element of elements) {
+    if (logo.contains(element) || element.closest("[data-header-logo]")) {
+      continue;
+    }
+
+    const backgroundColor = window.getComputedStyle(element).backgroundColor;
+
+    if (isLightColor(backgroundColor)) {
+      return true;
+    }
+
+    if (backgroundColor !== "rgba(0, 0, 0, 0)" && backgroundColor !== "transparent") {
+      return false;
+    }
+  }
+
+  return false;
+}
+
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [darkLogo, setDarkLogo] = useState(false);
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    onScroll();
+    let frame = 0;
+
+    const updateHeaderState = () => {
+      setScrolled(window.scrollY > 20);
+      setDarkLogo(logoIsOverLightSurface());
+    };
+
+    const onScroll = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(updateHeaderState);
+    };
+
+    frame = window.requestAnimationFrame(() => {
+      setMounted(true);
+      updateHeaderState();
+    });
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   const headerClass = "fixed inset-x-0 top-3 z-50 px-3 transition-all duration-300";
@@ -35,13 +103,20 @@ export function Header() {
 
   const inner = (
     <>
-      <Link href="/" aria-label="NPG Capital" className="fixed left-8 top-5 z-50 lg:left-12">
+      <Link
+        href="/"
+        aria-label="NPG Capital"
+        className="fixed left-8 top-5 z-50 lg:left-12"
+        data-header-logo
+      >
         <Image
           src="/assets/logoFull.png"
           alt="NPG Capital"
           width={240}
           height={60}
-          className="h-14 w-auto object-contain"
+          className={`h-14 w-auto object-contain transition-[filter,opacity] duration-500 ease-out ${
+            darkLogo ? "opacity-90 brightness-0" : "opacity-100 brightness-100"
+          }`}
           priority
         />
       </Link>

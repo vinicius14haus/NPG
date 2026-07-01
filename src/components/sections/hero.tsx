@@ -13,7 +13,12 @@ import { PrimaryButton } from "@/components/ui";
 
 function useHydrated() {
   const [hydrated, setHydrated] = useState(false);
-  useEffect(() => setHydrated(true), []);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => setHydrated(true));
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
   return hydrated;
 }
 
